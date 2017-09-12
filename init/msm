@@ -28,7 +28,7 @@
 
 
 # The Minecraft Server Manager version, use "msm version" to check yours.
-VERSION="0.9.5"
+VERSION="0.9.6"
 
 # Source, if it exists, the msm profile.d script
 if [ -f "/etc/profile.d/msm.sh" ]; then
@@ -1289,10 +1289,7 @@ server_create() {
 		else
 			printf "Creating server directory... "
 			as_user "$SETTINGS_USERNAME" "mkdir -p '$SETTINGS_SERVER_STORAGE_PATH/$1'"
-			as_user "$SETTINGS_USERNAME" "touch '$SETTINGS_SERVER_STORAGE_PATH/$1/$SETTINGS_DEFAULT_WHITELIST_PATH'"
-			as_user "$SETTINGS_USERNAME" "touch '$SETTINGS_SERVER_STORAGE_PATH/$1/$SETTINGS_DEFAULT_BANNED_IPS_PATH'"
-			as_user "$SETTINGS_USERNAME" "touch '$SETTINGS_SERVER_STORAGE_PATH/$1/$SETTINGS_DEFAULT_BANNED_PLAYERS_PATH'"
-			as_user "$SETTINGS_USERNAME" "touch '$SETTINGS_SERVER_STORAGE_PATH/$1/$SETTINGS_DEFAULT_OPS_PATH'"
+      as_user "$SETTINGS_USERNAME" "echo 'eula=true' > '$SETTINGS_SERVER_STORAGE_PATH/$1/eula.txt'"
 
 			# Set default ops users as appropriate
 			if [ ! -z "$SETTINGS_DEFAULT_OPS_LIST" ]; then
@@ -1301,7 +1298,7 @@ server_create() {
 				done
 			fi
 
-			as_user "$SETTINGS_USERNAME" "touch '$SETTINGS_SERVER_STORAGE_PATH/$1/$SETTINGS_SERVER_PROPERTIES'"
+			as_user "$SETTINGS_USERNAME" "echo 'server-port=25565' > '$SETTINGS_SERVER_STORAGE_PATH/$1/$SETTINGS_SERVER_PROPERTIES'"
 			as_user "$SETTINGS_USERNAME" "mkdir -p '$SETTINGS_SERVER_STORAGE_PATH/$1/$SETTINGS_DEFAULT_WORLD_STORAGE_PATH'"
 			as_user "$SETTINGS_USERNAME" "echo \"MSM requires all your worlds be moved into this directory.\" > '$SETTINGS_SERVER_STORAGE_PATH/$1/$SETTINGS_DEFAULT_WORLD_STORAGE_PATH/readme.txt'"
 			echo "Done."
